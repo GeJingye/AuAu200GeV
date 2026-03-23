@@ -118,6 +118,7 @@ class StPicoDstarMixedMaker : public StMaker
 
 	Float_t mBfield;// ´Å³¡Ç¿¶È
 	Int_t mRefmult;
+	Int_t Refmult;
 	Int_t mCen16,mCen9;
 
     TF1* fphiVcut;
