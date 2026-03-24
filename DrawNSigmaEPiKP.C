@@ -13,6 +13,8 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPoto
 	TH1F *h_passTrkcut = (TH1F *)inFile->Get("h_passTrkcut");
 	TH2F *h_VpdVz_Vz = (TH2F *)inFile->Get("h_VpdVz_Vz");
 	TH2F *h_Vx_Vy = (TH2F *)inFile->Get("h_Vx_Vy");
+	TH1F *h_VpdVzmVz = (TH1F *)inFile->Get("h_VpdVzmVz");
+	TH1F *h_Vr = (TH1F *)inFile->Get("h_Vr");
 
 	TH3F *h_nHitsFit_Pt_Eta = (TH3F *)inFile->Get("h_nHitsFit_Pt_Eta");
 	TH2F *h_nHitsFit_Pt = (TH2F *)h_nHitsFit_Pt_Eta->Project3D("zx");
@@ -106,7 +108,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPoto
 
 	if (1) // Draw clear plot
 	{
-		TCanvas *c_sum = new TCanvas("c_sum", "c_sum", 1400, 700);
+		TCanvas *c_sum = new TCanvas("c_sum", "c_sum", 1400, 600);
 		c_sum->Divide(2);
 
 		//c_sum->cd(1);
@@ -191,17 +193,16 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPoto
 		gPad->SetLeftMargin(0.12);
 		gPad->SetRightMargin(0.12);
 		gStyle->SetOptStat(0);
-		h_VpdVz_Vz->GetXaxis()->SetRangeUser(-10, 10);
-		h_VpdVz_Vz->GetYaxis()->SetRangeUser(-10, 10);
-		h_VpdVz_Vz->GetYaxis()->SetTitleOffset(1.5);
-		h_VpdVz_Vz->DrawClone("col z");
+		h_VpdVzmVz->GetXaxis()->SetRangeUser(-10, 10);
+		h_VpdVzmVz->DrawClone("col z");
 
 		c_sum->cd(2);
 		gPad->SetLogz(1);
 		gPad->SetLeftMargin(0.12);
 		gPad->SetRightMargin(0.12);
 		gStyle->SetOptStat(0);
-		h_Vx_Vy->DrawClone("col z");
+		h_Vr->GetXaxis()->SetRangeUser(0, 3.0);
+		h_Vr->DrawClone("");
 
 		c_sum->SaveAs(Form("roots/%d_VzVpdVz.png", number));
 	}

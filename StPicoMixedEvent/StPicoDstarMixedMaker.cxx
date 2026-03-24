@@ -340,7 +340,8 @@ Int_t StPicoDstarMixedMaker::Make()
     Bool_t vzcut = mVz < anaCuts::Vz_up && mVz > anaCuts::Vz_low;
     Bool_t verrcut = !(fabs(mVx) < anaCuts::Verror && fabs(mVy) < anaCuts::Verror && fabs(mVz) < anaCuts::Verror);// Vx,Vy,Vz<1.0e-5 cm, why? too small that better than resolution. 
     Bool_t vrcut =  mVr < anaCuts::Vr;
-	Bool_t notPileUp = picoEvent->refMult()<picoEvent->btofTrayMultiplicity()*0.36+45;// mRefMultCorrUtil->isPileUpEvent(mRefmult, picoEvent->nBTOFMatch(), mVz, 1);
+	//Bool_t notPileUp = picoEvent->refMult()<picoEvent->btofTrayMultiplicity()*0.36+45;
+	Bool_t notPileUp = !mRefMultCorrUtil->isPileUpEvent(mRefmult, picoEvent->nBTOFMatch(), mVz, 1);
     Bool_t cen0280cut = mCen16 > -1;
 	Bool_t vzvpdvzcut = fabs(mVz - mVpdVz) < anaCuts::vzVpdVz;
 	
@@ -563,7 +564,7 @@ Int_t StPicoDstarMixedMaker::Make()
 					  if (isLowPElectron__3)
 					  {
 						  h_nSigmaElectron_Eta__EIDcut_3_lowP->Fill(mom.Eta(), nSigmaE);
-						  isValidElectron__lowP_3 = (mom.Phi() < 3.2) && (fabs(mom.Eta()) < 0.8 && fabs(mom.Eta()) > 0.2) && (mom.Perp() > 0.07 && mom.Perp() < 0.14);
+						  isValidElectron__lowP_3 = (mom.Phi() < 3.2) && (fabs(mom.Eta()) < 0.8 && fabs(mom.Eta()) > 0.1) && (mom.Perp() > 0.07 && mom.Perp() < 0.14);
 						  if (trk->charge() > 0)
 						  {
 							  h_pT_Eta_Phi__EIDcut_3_lowP_p->Fill(mom.Perp(), mom.Eta(), mom.Phi());
@@ -580,7 +581,7 @@ Int_t StPicoDstarMixedMaker::Make()
 		  }
 
 		  //if (isElectronRegion1)//
-		  if (isElectronRegion1 || isElectronRegion2 || (isElectronRegion3 && isValidElectron__lowP_3))// && !isLowPElectron__3;isLowEtaElectron__3
+		  if (isElectronRegion1 || isElectronRegion2 || (isElectronRegion3 && !isLowEtaElectron__3))// && !isLowPElectron__3;isLowEtaElectron__3
 		  {
 			h_Pt_Cen_nSigmaE->Fill(mom.Perp(), mCen16, nSigmaE, reWeight);
 			h_Eta_Cen_nSigmaE->Fill(mom.Eta(), mCen16, nSigmaE, reWeight);
