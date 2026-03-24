@@ -1,6 +1,6 @@
 //---------------------从OO.root中提取直方图，并进行设置更改和元素添加----------------------
 #include "someFunction.h"
-void DrawNSigmaEPiKP(TString inFilename = "roots/20260323_Au200_3groups_rmPotonicEbyTagSingle_P23ie.root", Int_t number = 3) //
+void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPotonicEbyTagSingle_P23ie.root", Int_t number = 3) //
 {
 	// 从root文件中导入待拟合的直方图
 	TFile *inFile = new TFile(inFilename);
@@ -103,6 +103,108 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/20260323_Au200_3groups_rmPotoni
 	TH1F *h_phi_ratio_EperP = (TH1F *)h_phi__electrons->Clone("h_phi_ratio_EperP");
 	h_phi_ratio_EperP->SetTitle("e^{-}/e^{+} #phi ratio;#phi [GeV/c];Ratio");
 	h_phi_ratio_EperP->Divide(h_phi__positrons);
+
+	if (1) // Draw clear plot
+	{
+		TCanvas *c_sum = new TCanvas("c_sum", "c_sum", 1400, 700);
+		c_sum->Divide(2);
+
+		//c_sum->cd(1);
+		//gPad->SetLogz(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		//h_nSigmaElectron_P->GetYaxis()->SetRangeUser(-10, 10);
+		//h_nSigmaElectron_P->Draw("col z");
+
+		//c_sum->cd(2);
+		//gPad->SetLogz(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		//h_nSigmaElectron_P__EIDcut_total->Draw("col z");
+
+		//c_sum->cd(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		////h_passEvtcut->SetMaximum(5.5e8);
+		//h_passEvtcut->DrawClone("TEXT");
+		//h_passEvtcut->DrawClone("same");
+
+		//c_sum->cd(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		//h_passTrkcut->DrawClone("TEXT0");
+		//h_passTrkcut->DrawClone("same");
+
+		//c_sum->cd(1);
+		//gPad->SetLogz(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		//h_Vx_Vy->DrawClone("col z");
+
+		//c_sum->cd(2);
+		//gPad->SetLogz(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		//h_VpdVz_Vz->GetYaxis()->SetTitleOffset(1.5);
+		//h_VpdVz_Vz->DrawClone("col z");
+
+		//c_sum->cd(1);
+		//gPad->SetLogz(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		////h_nHitsFit_Pt->SetTitle("nHitsFit vs p_{T}");
+		//h_nHitsFit_Pt->GetXaxis()->SetRangeUser(0.0, 3.0);
+		//h_nHitsFit_Pt->DrawClone("col z");
+
+		//c_sum->cd(2);
+		//gPad->SetLogz(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		////h_nHitsDEdx_Pt->SetTitle("nHitsDEdx vs p_{T}");
+		//h_nHitsDEdx_Pt->GetXaxis()->SetRangeUser(0.0, 3.0);
+		//h_nHitsDEdx_Pt->DrawClone("col z");
+
+		//c_sum->cd(1);
+		//gPad->SetLogz(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		//h_nSigmaElectron_Eta__EIDcut_3_lowP->DrawClone("col z");
+
+		//c_sum->cd(2);
+		//gPad->SetLogz(1);
+		//gPad->SetLeftMargin(0.12);
+		//gPad->SetRightMargin(0.12);
+		//gStyle->SetOptStat(0);
+		//h_nSigmaElectron_Eta__EIDcut_3_highP->DrawClone("col z");
+
+		c_sum->cd(1);
+		gPad->SetLogz(1);
+		gPad->SetLeftMargin(0.12);
+		gPad->SetRightMargin(0.12);
+		gStyle->SetOptStat(0);
+		h_VpdVz_Vz->GetXaxis()->SetRangeUser(-10, 10);
+		h_VpdVz_Vz->GetYaxis()->SetRangeUser(-10, 10);
+		h_VpdVz_Vz->GetYaxis()->SetTitleOffset(1.5);
+		h_VpdVz_Vz->DrawClone("col z");
+
+		c_sum->cd(2);
+		gPad->SetLogz(1);
+		gPad->SetLeftMargin(0.12);
+		gPad->SetRightMargin(0.12);
+		gStyle->SetOptStat(0);
+		h_Vx_Vy->DrawClone("col z");
+
+		c_sum->SaveAs(Form("roots/%d_VzVpdVz.png", number));
+	}
 
 	if (0) // nsigmaElectron__EID, h_pP_ppT, h_passEvtcut, h_passTrkcut
 	{
@@ -230,98 +332,6 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/20260323_Au200_3groups_rmPotoni
 		gStyle->SetOptStat(0);
 
 		c_temp->SaveAs(Form("roots/%d_Track_and_Event_Check.png", number));
-	}
-	if (0) // Draw clear plot
-	{
-		TCanvas *c_sum = new TCanvas("c_sum", "c_sum",1400, 700);
-		c_sum->Divide(2);
-
-		//c_sum->cd(1);
-		//gPad->SetLogz(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		//h_nSigmaElectron_P->GetYaxis()->SetRangeUser(-10, 10);
-		//h_nSigmaElectron_P->Draw("col z");
-
-		//c_sum->cd(2);
-		//gPad->SetLogz(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		//h_nSigmaElectron_P__EIDcut_total->Draw("col z");
-
-		//c_sum->cd(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		////h_passEvtcut->SetMaximum(5.5e8);
-		//h_passEvtcut->DrawClone("TEXT");
-		//h_passEvtcut->DrawClone("same");
-
-		//c_sum->cd(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		//h_passTrkcut->DrawClone("TEXT0");
-		//h_passTrkcut->DrawClone("same");
-
-		//c_sum->cd(1);
-		//gPad->SetLogz(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		//h_Vx_Vy->DrawClone("col z");
-
-		//c_sum->cd(2);
-		//gPad->SetLogz(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		//h_VpdVz_Vz->GetYaxis()->SetTitleOffset(1.5);
-		//h_VpdVz_Vz->DrawClone("col z");
-
-		//c_sum->cd(1);
-		//gPad->SetLogz(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		////h_nHitsFit_Pt->SetTitle("nHitsFit vs p_{T}");
-		//h_nHitsFit_Pt->GetXaxis()->SetRangeUser(0.0, 3.0);
-		//h_nHitsFit_Pt->DrawClone("col z");
-
-		//c_sum->cd(2);
-		//gPad->SetLogz(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		////h_nHitsDEdx_Pt->SetTitle("nHitsDEdx vs p_{T}");
-		//h_nHitsDEdx_Pt->GetXaxis()->SetRangeUser(0.0, 3.0);
-		//h_nHitsDEdx_Pt->DrawClone("col z");
-
-		//c_sum->cd(1);
-		//gPad->SetLogz(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		//h_nSigmaElectron_Eta__EIDcut_3_lowP->DrawClone("col z");
-
-		//c_sum->cd(2);
-		//gPad->SetLogz(1);
-		//gPad->SetLeftMargin(0.12);
-		//gPad->SetRightMargin(0.12);
-		//gStyle->SetOptStat(0);
-		//h_nSigmaElectron_Eta__EIDcut_3_highP->DrawClone("col z");
-
-		c_sum->cd(1);
-		gPad->SetLogz(1);
-		gPad->SetLeftMargin(0.12);
-		gPad->SetRightMargin(0.12);
-		gStyle->SetOptStat(0);
-		h_eNumber_Cen->DrawClone("col z");
-		
-
-		c_sum->SaveAs(Form("roots/%d_epNumber.png", number));
 	}
 	if (0) // track QA and TOF track check
 	{

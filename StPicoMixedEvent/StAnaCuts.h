@@ -23,11 +23,11 @@ namespace anaCuts
 	//Recalibrate nSigmaElectron  
 
 	// event cuts 
-	Float_t const Vz_up = 30;// < cm.
-	Float_t const Vz_low = -30;// < cm.
+	Float_t const Vz_up = 60;// < cm.
+	Float_t const Vz_low = -60;// < cm.
 	Float_t const Verror = 1.0e-5; // 
-	Float_t const Vr = 2; // cm
-	Float_t const vzVpdVz = 3; // cm
+	Float_t const Vr = 1; // cm
+	Float_t const vzVpdVz = 4; // cm
 	// tracks cuts
 	Int_t   const NHitsFit_highPt = 40;//40
 	Int_t   const NHitsDedx_highPt = 30;//30

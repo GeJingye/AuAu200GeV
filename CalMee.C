@@ -1,4 +1,4 @@
-//---------------------从OO.root中提取直方图，并进行设置更改和元素添加----------------------
+//---------------------从AuAu200GeV.root中提取直方图，并进行设置更改和元素添加----------------------
 #include "someFunction.h"
 void CalMee(TString inFileName = "roots/20260323_Au200_3groups_rmPotonicEbyTagSingle_P23ie.root", Int_t number = 3)//
 {
@@ -225,6 +225,89 @@ void CalMee(TString inFileName = "roots/20260323_Au200_3groups_rmPotonicEbyTagSi
 
 	TH2F *h_Mee_Pt__temp2_Rebin = (TH2F*)h_Mee_Pt_Cen__temp2_Rebin->Project3D("yx");
 	TH2F *h_Mee_Pt__temp3_Rebin = (TH2F*)h_Mee_Pt_Cen__LikeMixed_Rebin->Project3D("yx");
+
+	if (1) // make clear picture
+	{
+		TCanvas *c_clear = new TCanvas("c_clear", "c_clear", 1300, 600);
+		c_clear->Divide(2);
+		h_Mee__unlikeSame_Rebin->SetLineColor(kBlack);		h_Mee__unlikeSame_Rebin->SetMarkerStyle(kOpenCircle); h_Mee__unlikeSame_Rebin->SetMarkerColor(kBlack);
+		h_Mee__LikeSame_Rebin->SetLineColor(kRed);			h_Mee__LikeSame_Rebin->SetMarkerStyle(kOpenSquare);   h_Mee__LikeSame_Rebin->SetMarkerColor(kRed);
+		h_Mee__unlikeMixed_Rebin->SetLineColor(kBlue);		h_Mee__unlikeMixed_Rebin->SetMarkerStyle(kCircle);    h_Mee__unlikeMixed_Rebin->SetMarkerColor(kBlue);
+		h_Mee__rmLS_Rebin->SetLineColor(6);					h_Mee__rmLS_Rebin->SetMarkerStyle(kOpenCross);        h_Mee__rmLS_Rebin->SetMarkerColor(6);
+		h_Mee__rmUM_Rebin->SetLineColor(kGreen);			h_Mee__rmUM_Rebin->SetMarkerStyle(kOpenStar);		  h_Mee__rmUM_Rebin->SetMarkerColor(kGreen);
+
+		h_Mee__rmLS_Rebin->SetTitle(";M_{ee} (GeV/c^{2});dN/dM_{ee} (GeV/c^{2})^{-1}");
+		h_Mee__rmUM_Rebin->SetTitle(";M_{ee} (GeV/c^{2});dN/dM_{ee} (GeV/c^{2})^{-1}");
+		c_clear->cd(1);//背景+信号
+		gPad->SetLogy(1);
+		gPad->SetLeftMargin(0.12);
+		gPad->SetRightMargin(0.12);
+		gStyle->SetOptStat(0);
+		h_Mee__rmLS_Rebin->SetMaximum(1e9);
+		h_Mee__rmLS_Rebin->SetMinimum(10);
+		h_Mee__rmLS_Rebin->DrawClone("PE");
+		h_Mee__LikeSame_Rebin->DrawClone("same PE");
+		h_Mee__unlikeSame_Rebin->DrawClone("same PE");
+		TPaveText *pt_LS = new TPaveText(0.15, 0.15, 0.40, 0.40, "NDC NB");
+		pt_LS->SetFillColorAlpha(0, 0);   // 透明底
+		pt_LS->SetBorderSize(0);
+		pt_LS->SetTextFont(42);
+		pt_LS->SetTextSize(0.032);
+		pt_LS->SetTextAlign(12);
+		pt_LS->AddText("Fixed Target: Au+Au @ 3.85 GeV");
+		pt_LS->AddText("Centrality: 0~80 %");
+		pt_LS->AddText("0 < p_{T}^{ee} < 1.5 GeV/c");
+		pt_LS->AddText("p_{T}^{e} > 0.2 GeV/c,-1.5 < #eta < 0.0");
+		pt_LS->DrawClone("same");
+		TPaveText *pt_LS1 = new TPaveText(0.6, 0.75, 0.85, 0.90, "NDC NB");
+		pt_LS1->SetFillColorAlpha(0, 0);   // 透明底
+		pt_LS1->SetBorderSize(0);
+		pt_LS1->SetTextFont(42);
+		pt_LS1->SetTextSize(0.032);
+		pt_LS1->SetTextAlign(12);
+		pt_LS1->AddText(Form("LMR (%.1f<M_{ee}<%.1f GeV/c^{2})", x_low, x_up));
+		//pt_LS1->AddText("Like-sign Same-event method:");
+		pt_LS1->AddText(Form("S = %.0f, B = %.0f", N_LS - B_LS, B_LS));
+		pt_LS1->AddText(Form("S/B = %.4f, #frac{S}{#sqrt{S+2B}} = %.2f", (N_LS - B_LS) / B_LS, signif_LS));
+		pt_LS1->DrawClone("same");
+
+		c_clear->cd(2);//背景+信号
+		gPad->SetLogy(1);
+		gPad->SetLeftMargin(0.12);
+		gPad->SetRightMargin(0.12);
+		gStyle->SetOptStat(0);
+		h_Mee__rmUM_Rebin->SetMaximum(1e9);
+		h_Mee__rmUM_Rebin->SetMinimum(10);
+		h_Mee__rmUM_Rebin->DrawClone("PE");
+		h_Mee__unlikeMixed_Rebin->DrawClone("same PE");
+		h_Mee__unlikeSame_Rebin->DrawClone("same PE");
+		TPaveText *pt_UM = new TPaveText(0.15, 0.15, 0.40, 0.40, "NDC NB");
+		pt_UM->SetFillColorAlpha(0, 0);   // 透明底
+		pt_UM->SetBorderSize(0);
+		pt_UM->SetTextFont(42);
+		pt_UM->SetTextSize(0.032);
+		pt_UM->SetTextAlign(12);
+		pt_UM->AddText("Fixed Target: Au+Au @ 3.85 GeV");
+		pt_UM->AddText("Centrality: 0~80 %");
+		pt_UM->AddText("0 < p_{T}^{ee} < 1.5 GeV/c");
+		pt_UM->AddText("p_{T}^{e} > 0.2 GeV/c,-1.5 < #eta < 0.0");
+		pt_UM->DrawClone("same");
+		TPaveText *pt_UM1 = new TPaveText(0.5, 0.70, 1.0, 0.95, "NDC NB");
+		pt_UM1->SetFillColorAlpha(0, 0);   // 透明底
+		pt_UM1->SetBorderSize(0);
+		pt_UM1->SetTextFont(42);
+		pt_UM1->SetTextSize(0.032);
+		pt_UM1->SetTextAlign(12);
+		pt_UM1->AddText(Form("LMR (%.1f<M_{ee}<%.1f GeV/c^{2})", x_low, x_up));
+		//pt_UM1->AddText("Unlike-sign Mix-event method:");
+		pt_UM1->AddText(Form("NR: %.1f<M_{ee}<%.1f,%.1f<p_{T}^{ee}<%.1f,", NR_low_M, NR_up_M, NR_low_pt, NR_up_pt));
+		pt_UM1->AddText("cen:0~80%");
+		pt_UM1->AddText(Form("S = %.0f, B = %.0f", N_UM - B_UM, B_UM));
+		pt_UM1->AddText(Form("S/B = %.4f, #frac{S}{#sqrt{S+B}} = %.2f", (N_UM - B_UM) / B_UM, signif_UM));
+		pt_UM1->DrawClone("same");
+
+		c_clear->SaveAs(Form("roots/%d_CalMee_LS_UM.png", number));
+	}
 
 	if (0)//c1 QA
 	{

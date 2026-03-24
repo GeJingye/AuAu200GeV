@@ -120,8 +120,8 @@ void StPicoDstarMixedMaker::initHists()
 	memset(buffer_nEPlus, 0, sizeof(buffer_nEPlus));
 	memset(buffer_nEMinus, 0, sizeof(buffer_nEMinus));
 
-	//mRefMultCorrUtil = CentralityMaker::instance()->getRefMultCorr();
-	//mRefMultCorrUtil->setVerbose(kFALSE);
+	mRefMultCorrUtil = CentralityMaker::instance()->getRefMultCorr();
+	mRefMultCorrUtil->setVerbose(kFALSE);
 
 	// Event histograms
 	fphiVcut = new TF1("fphiVcut", "0.84326*exp(-49.4819*x)-0.996609*x+0.19801", 0.0, 1.0);
@@ -340,7 +340,7 @@ Int_t StPicoDstarMixedMaker::Make()
     Bool_t vzcut = mVz < anaCuts::Vz_up && mVz > anaCuts::Vz_low;
     Bool_t verrcut = !(fabs(mVx) < anaCuts::Verror && fabs(mVy) < anaCuts::Verror && fabs(mVz) < anaCuts::Verror);// Vx,Vy,Vz<1.0e-5 cm, why? too small that better than resolution. 
     Bool_t vrcut =  mVr < anaCuts::Vr;
-	Bool_t notPileUp = 1;// mRefMultCorrUtil->isPileUpEvent(mRefmult, picoEvent->nBTOFMatch(), mVz, 1);
+	Bool_t notPileUp = picoEvent->refMult()<picoEvent->btofTrayMultiplicity()*0.36+45;// mRefMultCorrUtil->isPileUpEvent(mRefmult, picoEvent->nBTOFMatch(), mVz, 1);
     Bool_t cen0280cut = mCen16 > -1;
 	Bool_t vzvpdvzcut = fabs(mVz - mVpdVz) < anaCuts::vzVpdVz;
 	
