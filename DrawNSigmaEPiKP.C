@@ -1,6 +1,6 @@
 //---------------------从OO.root中提取直方图，并进行设置更改和元素添加----------------------
 #include "someFunction.h"
-void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPotonicEbyTagSingle_P23ie.root", Int_t number = 3) //
+void DrawNSigmaEPiKP(TString inFilename = "roots/20260325_Au200_3groups_MoreVzBinInMix_P23ie.root", Int_t number = 3) //
 {
 	// 从root文件中导入待拟合的直方图
 	TFile *inFile = new TFile(inFilename);
@@ -106,7 +106,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPoto
 	h_phi_ratio_EperP->SetTitle("e^{-}/e^{+} #phi ratio;#phi [GeV/c];Ratio");
 	h_phi_ratio_EperP->Divide(h_phi__positrons);
 
-	if (1) // Draw clear plot
+	if (0) // Draw clear plot
 	{
 		TCanvas *c_sum = new TCanvas("c_sum", "c_sum", 1400, 600);
 		c_sum->Divide(2);
@@ -500,7 +500,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPoto
 		// delete c_eTrack;
 	}
 
-	if (0) // EID in group1(pT>0.2, |eta|<1)
+	if (1) // EID in group1(pT>0.2, |eta|<1)
 	{
 		// 设置直方图格式
 		// 去除误差条，设置Marker形状颜色，设置线条颜色，设置图例，设置坐标轴标题，设置对数Y坐标）
@@ -555,7 +555,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPoto
 
 		c4->SaveAs(Form("roots/%d_group1.png", number));
 	}
-	if (0) // EID in group2(pT>0.2, 1.0<|eta|<1.8)
+	if (1) // EID in group2(pT>0.2, 1.0<|eta|<1.8)
 	{
 		// 设置直方图格式
 		//h_nSigmaElectron_P__2->SetTitle("n#sigma_{e} in p_{T}>0.2&0.9<|#eta|<1.8;p (GeV/c);n#sigma_{e}");
@@ -646,7 +646,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPoto
 
 		c5->SaveAs(Form("roots/%d_group2.png", number));
 	}
-	if (0) // EID in group3(pT>0.2, 1.0<|eta|<1.8)
+	if (1) // EID in group3(pT>0.2, 1.0<|eta|<1.8)
 	{
 		// 设置直方图格式
 
@@ -732,7 +732,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/3_20260323_Au200_3groups_rmPoto
 		c6->SaveAs(Form("roots/%d_group3.png", number));
 	}
 
-	if (0)//check PhiV cut
+	if (1)//check PhiV cut
 	{
 		h_Mee__ranComb->SetLineColor(kBlack);
 		h_Mee__ranComb->GetYaxis()->SetTitleOffset(1.5);

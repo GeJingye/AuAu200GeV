@@ -53,13 +53,14 @@ g = global → 全局变量（极少用）
 k = const/constexpr → 编译期常量（如 kStOK）
 h = histogram →  ROOT 直方图指针
 */
+int DefineCen16byRefmult(int Refmult);
 
 const Int_t kMagBins = 2;// 磁场的取向（+/-）
 const Int_t kCenBins = 16;// 中心度分成的bin数(0,80,5),80%~100%被忽略了吗？
-const Int_t kVzBins = 20;// Vz分成的bin数
+const Int_t kVzBins = 40;// Vz分成的bin数
 Int_t magBufferIndex, cenBufferIndex, vzBufferIndex;// 索引到每个bin
 const Int_t kMaxEventsInBuffer = 100;// 每个buffer中事件数最大值
-const Int_t kMaxElectrons = 50;// 每个event中正、负电子数的上界
+const Int_t kMaxElectrons = 30;// 每个event中正、负电子数的上界
 
 Int_t current_nPositron;// 当前事件中通过筛选的正电子（e+）数
 Int_t current_nElectron;// 当前事件中通过筛选的电子（e-）数
@@ -93,17 +94,19 @@ StPicoDstarMixedMaker::~StPicoDstarMixedMaker() {}
 
 Int_t StPicoDstarMixedMaker::Init()
 {
-  mOutFileBaseName = mOutFileBaseName.ReplaceAll(".root", "");
-  mFile = new TFile(mOutFileBaseName+".root", "RECREATE");
+	mOutFileBaseName = mOutFileBaseName.ReplaceAll(".root", "");
+	mFile = new TFile(mOutFileBaseName+".root", "RECREATE");
 
-  // initialize histograms and trees
-  initHists();
-  return kStOK;
+	mRefMultCorrUtil = CentralityMaker::instance()->getRefMultCorr();
+	mRefMultCorrUtil->setVerbose(kFALSE);
+	// initialize histograms and trees
+	initHists();
+	return kStOK;
 }
 
 void StPicoDstarMixedMaker::initHists()
 {
-	ifstream readnum;
+	  	ifstream readnum;
 	readnum.open(mRunNumList);
 	Int_t runum = 0;
 	Int_t totalNum = 0;
@@ -113,15 +116,11 @@ void StPicoDstarMixedMaker::initHists()
 	}
 	readnum.close();
 
-
 	// 把一段连续的内存 每个字节 都设为0,例如：Int_t buf[1024]; memset(buf, 0, sizeof(buf));
 	memset(nEventsInBuffer, 0, sizeof(nEventsInBuffer));
 	memset(bufferFullFlag, 0, sizeof(bufferFullFlag));
 	memset(buffer_nEPlus, 0, sizeof(buffer_nEPlus));
 	memset(buffer_nEMinus, 0, sizeof(buffer_nEMinus));
-
-	mRefMultCorrUtil = CentralityMaker::instance()->getRefMultCorr();
-	mRefMultCorrUtil->setVerbose(kFALSE);
 
 	// Event histograms
 	fphiVcut = new TF1("fphiVcut", "0.84326*exp(-49.4819*x)-0.996609*x+0.19801", 0.0, 1.0);
@@ -332,13 +331,13 @@ Int_t StPicoDstarMixedMaker::Make()
 	mRefMultCorrUtil->initEvent(mRefmult, mVz);
 	Double_t reWeight = mRefMultCorrUtil->getWeight();
 	mCen9 = mRefMultCorrUtil->getCentralityBin9();
-	mCen16 = mRefMultCorrUtil->getCentralityBin16();
-	//mCen16 = DefineCen16byRefmult(Refmult); Double_t reWeight = 1;//from Wendi 
+	//mCen16 = mRefMultCorrUtil->getCentralityBin16();
+	mCen16 = DefineCen16byRefmult(Refmult); reWeight = 1;//from Wendi 
 	// 不同条件cut后的事例数统计
     Bool_t vzcut = mVz < anaCuts::Vz_up && mVz > anaCuts::Vz_low;
     Bool_t verrcut = !(fabs(mVx) < anaCuts::Verror && fabs(mVy) < anaCuts::Verror && fabs(mVz) < anaCuts::Verror);// Vx,Vy,Vz<1.0e-5 cm, why? too small that better than resolution. 
     Bool_t vrcut =  mVr < anaCuts::Vr;
-	//Bool_t notPileUp = picoEvent->refMult()<picoEvent->btofTrayMultiplicity()*0.36+45;
+	//Bool_t notPileUp = picoEvent->refMult()<picoEvent->btofTrayMultiplicity()*0.36+45;//from kshen
 	Bool_t notPileUp = !mRefMultCorrUtil->isPileUpEvent(mRefmult, picoEvent->nBTOFMatch(), mVz, 1);
     Bool_t cen0280cut = mCen16 > -1;
 	Bool_t vzvpdvzcut = fabs(mVz - mVpdVz) < anaCuts::vzVpdVz;
@@ -418,13 +417,6 @@ Int_t StPicoDstarMixedMaker::Make()
 		  h_nSigmaKaon_P->Fill(mom.Mag(), nSigmaK);
 		  h_nSigmaProton_P->Fill(mom.Mag(), nSigmaP);
 		  // ******************以下分析均基于满足goodTrackCuts的主径迹**************************
-		  /*    Track with conditions in StAnaCuts.h, such as:
-				NHitsFit > 40;
-				NHitsFitRatio > 0.52;
-				NHitsDedx > 30;
-				Dca < 1 cm;
-				GPt > 0.2 GeV/c;
-			   |Eta| < 1.8;		  */
 		  Bool_t goodtrack = isGoodTrack(trk, picoEvent);
 		  if (!goodtrack) continue;
 		  h_passTrkcut->Fill(2);
@@ -465,7 +457,6 @@ Int_t StPicoDstarMixedMaker::Make()
 		  Bool_t isTPCKaon__3 = kTRUE;
 		  Bool_t isTPCElectron__3 = kFALSE;
 		  Bool_t isLowPElectron__3 = kFALSE;
-		  Bool_t isSomePhiElectron__3 = kFALSE;
 		  Bool_t isLowEtaElectron__3 = kFALSE;
 		  Bool_t isValidElectron__lowP_3 = kTRUE;
 
@@ -487,11 +478,8 @@ Int_t StPicoDstarMixedMaker::Make()
 				  h_Eta__TOFMatch->Fill(mom.Eta());
 				  h_Phi__TOFMatch->Fill(mom.Phi());
 				  if (mom.Perp() > 0.2 && fabs(mom.Eta()) < anaCuts::Eta) h_invBeta_P__TOFMatch->Fill(mom.Mag(), 1. / beta);
-				  if (fabs(1.0 / beta - 1) < 0.02)
-				  {
-					  isTOFElectron__1 = kTRUE;
-					  h_nSigmaEcorr_P__TOFMatch->Fill(mom.Mag(), nSigmaE_corr);
-				  }
+				  isTOFElectron__1 = fabs(1.0 / beta - 1) < 0.025;
+
 			  }
 		  }
 		  // group 1
@@ -555,7 +543,6 @@ Int_t StPicoDstarMixedMaker::Make()
 				  {
 					  isLowPElectron__3 = nSigmaE < -75 * mom.Mag() + 12.5;
 					  isLowEtaElectron__3 = fabs(mom.Eta()) < 0.1;
-					  isSomePhiElectron__3 = mom.Phi() < -1.1 && mom.Phi() > -1.6;
 					  h_nSigmaElectron_P__EIDcut_3->Fill(mom.Mag(), nSigmaE);
 					  isElectronRegion3 = kTRUE;
 					  if (isLowPElectron__3)
@@ -577,8 +564,8 @@ Int_t StPicoDstarMixedMaker::Make()
 			  }
 		  }
 
-		  //if (isElectronRegion1)//
-		  if (isElectronRegion1 || isElectronRegion2 || (isElectronRegion3 && !isLowEtaElectron__3))// && !isLowPElectron__3;isLowEtaElectron__3
+		  if (isElectronRegion1)//
+		  //if (isElectronRegion1 || isElectronRegion2 || (isElectronRegion3 && !isLowEtaElectron__3))// && !isLowPElectron__3;isLowEtaElectron__3
 		  {
 			h_Pt_Cen_nSigmaE->Fill(mom.Perp(), mCen16, nSigmaE, reWeight);
 			h_Eta_Cen_nSigmaE->Fill(mom.Eta(), mCen16, nSigmaE, reWeight);
@@ -668,7 +655,7 @@ Int_t StPicoDstarMixedMaker::Make()
 			  //phiV cut
 			  Double_t angleV = getPhiVAngle(particle1_4V, particle2_4V, 1, -1);// 注意参数1、-1的选取要求
 			  Double_t angleVcut = fphiVcut->Eval(eepair.M()); // 根据fphiVcut关于pair-M的函数取值
-			  if (fabs(eepair.Rapidity()) <= 1) h_Mee_PhiV__unlikeSame->Fill(eepair.M(), angleV);
+			  h_Mee_PhiV__unlikeSame->Fill(eepair.M(), angleV);
 			  if (eepair.M() < anaCuts::PhiVCutMRange && angleV < angleVcut)
 			  {
 				  positroninfo[x].isPhotonicE = kTRUE;
@@ -729,13 +716,13 @@ Int_t StPicoDstarMixedMaker::Make()
 			  //Double_t angleV = getPhiVAngle(particle1_4V, particle2_4V, 1, -1);// 注意参数1、-1的选取要求
 			  //Double_t angleVcut = fphiVcut->Eval(eepair.M()); // 根据fphiVcut关于pair-M的函数取值
 			  //if (eepair.M() > anaCuts::PhiVCutMRange || angleV > angleVcut)
-			  if (fabs(eepair.Rapidity()) <= 1) h_Mee__unlikeSame->Fill(eepair.M());
+			  h_Mee__unlikeSame->Fill(eepair.M());
 			  if (!positroninfo[x].isPhotonicE && !electroninfo[y].isPhotonicE)
 			  {
+				h_Mee__unlikeSame__w_PhiV_Cut->Fill(eepair.M());
 				  h_Rapidity__unlikeSame->Fill(eepair.Rapidity());
 				  if (fabs(eepair.Rapidity()) <= 1)// 为什么需要在中心快度区？
 				  {
-					  h_Mee__unlikeSame__w_PhiV_Cut->Fill(eepair.M());
 					  h_Mee_Pt_Cen__unlikeSame->Fill(eepair.M(), eepair.Perp(), mCen16, reWeight);
 				  }
 			  }
@@ -1047,8 +1034,6 @@ Bool_t StPicoDstarMixedMaker::isGoodEvent(StPicoEvent const* const picoEvent) co
 Bool_t StPicoDstarMixedMaker::isGoodTrack(StPicoTrack const* trk, StPicoEvent const* const picoEvent) const
 {
 	TVector3 mom = trk->pMom();
-	//trk->gPt() > anaCuts::GPt &&
-    //fabs(trk->gMom().Eta()) < anaCuts::Eta &&
 	return (
 	(mom.Perp() >= 0.2 &&
 	fabs(trk->nHitsFit()) >= anaCuts::NHitsFit_highPt &&
