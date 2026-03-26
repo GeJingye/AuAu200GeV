@@ -57,10 +57,10 @@ int DefineCen16byRefmult(int Refmult);
 
 const Int_t kMagBins = 2;// 磁场的取向（+/-）
 const Int_t kCenBins = 16;// 中心度分成的bin数(0,80,5),80%~100%被忽略了吗？
-const Int_t kVzBins = 40;// Vz分成的bin数
+const Int_t kVzBins = 60;// Vz分成的bin数
 Int_t magBufferIndex, cenBufferIndex, vzBufferIndex;// 索引到每个bin
-const Int_t kMaxEventsInBuffer = 100;// 每个buffer中事件数最大值
-const Int_t kMaxElectrons = 30;// 每个event中正、负电子数的上界
+const Int_t kMaxEventsInBuffer = 50;// 每个buffer中事件数最大值
+const Int_t kMaxElectrons = 40;// 每个event中正、负电子数的上界
 
 Int_t current_nPositron;// 当前事件中通过筛选的正电子（e+）数
 Int_t current_nElectron;// 当前事件中通过筛选的电子（e-）数
@@ -331,8 +331,8 @@ Int_t StPicoDstarMixedMaker::Make()
 	mRefMultCorrUtil->initEvent(mRefmult, mVz);
 	Double_t reWeight = mRefMultCorrUtil->getWeight();
 	mCen9 = mRefMultCorrUtil->getCentralityBin9();
-	//mCen16 = mRefMultCorrUtil->getCentralityBin16();
-	mCen16 = DefineCen16byRefmult(Refmult); reWeight = 1;//from Wendi 
+	mCen16 = mRefMultCorrUtil->getCentralityBin16();
+	//mCen16 = DefineCen16byRefmult(Refmult); reWeight = 1;//from Wendi 
 	// 不同条件cut后的事例数统计
     Bool_t vzcut = mVz < anaCuts::Vz_up && mVz > anaCuts::Vz_low;
     Bool_t verrcut = !(fabs(mVx) < anaCuts::Verror && fabs(mVy) < anaCuts::Verror && fabs(mVz) < anaCuts::Verror);// Vx,Vy,Vz<1.0e-5 cm, why? too small that better than resolution. 
