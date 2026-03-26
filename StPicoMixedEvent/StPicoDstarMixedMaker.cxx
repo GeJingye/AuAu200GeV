@@ -330,12 +330,10 @@ Int_t StPicoDstarMixedMaker::Make()
 	// 通过离线多重数计算该事例的中心度
 	mRefMultCorrUtil->init(mRunId);
 	mRefMultCorrUtil->initEvent(mRefmult, mVz);
-	//Double_t reWeight = 1;
 	Double_t reWeight = mRefMultCorrUtil->getWeight();
-	//mCen9 = 1;
 	mCen9 = mRefMultCorrUtil->getCentralityBin9();
-	//mCen16 = 1;
 	mCen16 = mRefMultCorrUtil->getCentralityBin16();
+	//mCen16 = DefineCen16byRefmult(Refmult); Double_t reWeight = 1;//from Wendi 
 	// 不同条件cut后的事例数统计
     Bool_t vzcut = mVz < anaCuts::Vz_up && mVz > anaCuts::Vz_low;
     Bool_t verrcut = !(fabs(mVx) < anaCuts::Verror && fabs(mVy) < anaCuts::Verror && fabs(mVz) < anaCuts::Verror);// Vx,Vy,Vz<1.0e-5 cm, why? too small that better than resolution. 
@@ -359,7 +357,6 @@ Int_t StPicoDstarMixedMaker::Make()
 	  h_cen__reWeight->Fill(mCen16, reWeight);
       // ******************以下分析均基于0~80%中心度***********************
       if(!cen0280cut) return kStOK;
-	  // 通过mag, cen, vz的值确定magBufferIndex, cenBufferIndex, vzBufferIndex的索引
       if(kMagBins==2)
       {
         if(mBfield<0.) magBufferIndex = 0;
@@ -1178,4 +1175,28 @@ void StPicoDstarMixedMaker::copyCurrentToBuffer()
 		buffer_eMinus[magBufferIndex][cenBufferIndex][vzBufferIndex][eventIndex][i] = current_electron[i];
 	if (nEventsInBuffer[magBufferIndex][cenBufferIndex][vzBufferIndex] < kMaxEventsInBuffer)
 		nEventsInBuffer[magBufferIndex][cenBufferIndex][vzBufferIndex]++;
+}
+
+int DefineCen16byRefmult(int Refmult) {//from Wendi
+	int n_cen;
+
+	if (Refmult > 590) n_cen = 0;
+	else if (Refmult > 488) n_cen = 1;
+	else if (Refmult > 405) n_cen = 2;
+	else if (Refmult > 334) n_cen = 3;
+	else if (Refmult > 274) n_cen = 4;
+	else if (Refmult > 223) n_cen = 5;
+	else if (Refmult > 180) n_cen = 6;
+	else if (Refmult > 144) n_cen = 7;
+	else if (Refmult > 113) n_cen = 8;
+	else if (Refmult > 88) n_cen = 9;
+	else if (Refmult > 67) n_cen = 10;
+	else if (Refmult > 50) n_cen = 11;
+	else if (Refmult > 36) n_cen = 12;
+	else if (Refmult > 26) n_cen = 13;
+	else if (Refmult > 18) n_cen = 14;
+	else if (Refmult > 12) n_cen = 15;
+
+	else n_cen = -1;
+	return n_cen;
 }
