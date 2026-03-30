@@ -259,7 +259,6 @@ void StPicoDstarMixedMaker::initHists()
 	h_Mee_Pt_Cen__unlikeMixed = new TH3F("h_Mee_Pt_Cen__unlikeMixed", "Mee vs p_{T} vs Cen;Mee(GeV/c^{2});p_{T} (GeV/c);Cen", 800, 0, 4, 100, 0, 5, 16, 0, 16);
 	h_Mee_Pt_Cen__likemmMixed = new TH3F("h_Mee_Pt_Cen__likemmMixed", "Mee vs p_{T} vs Cen;Mee(GeV/c^{2});p_{T} (GeV/c);Cen", 800, 0, 4, 100, 0, 5, 16, 0, 16);
 	h_Mee_Pt_Cen__likeppMixed = new TH3F("h_Mee_Pt_Cen__likeppMixed", "Mee vs p_{T} vs Cen;Mee(GeV/c^{2});p_{T} (GeV/c);Cen", 800, 0, 4, 100, 0, 5, 16, 0, 16);
-
 }// 
 
 Int_t StPicoDstarMixedMaker::Make()
@@ -326,7 +325,7 @@ Int_t StPicoDstarMixedMaker::Make()
 	h_nTofMat_RefMul->Fill(Refmult, picoEvent->nBTOFMatch());
     h_mRefMult->Fill(mRefmult);
 
-	// 通过离线多重数计算该事例的中心度
+	// 计算该事例的中心度
 	mRefMultCorrUtil->init(mRunId);
 	mRefMultCorrUtil->initEvent(mRefmult, mVz);
 	Double_t reWeight = mRefMultCorrUtil->getWeight();

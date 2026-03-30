@@ -42,21 +42,21 @@ CentralityMaker* CentralityMaker::fInstance = 0 ;
 //_________________
 CentralityMaker::CentralityMaker() {
   // Create instance for centrality classes
-  fRefMultCorr  = new StRefMultCorr("refmult") ;
-  // fRefMult2Corr = new StRefMultCorr("refmult2") ;
-  // fRefMult3Corr = new StRefMultCorr("refmult3") ;
-  // fRefMultCorr_Isobar  = new StRefMultCorr("refmult","Isobar") ;
-  // fRefMultCorrFxt = new StRefMultCorr("fxtmult");
-  // fRefMult6Corr = new StRefMultCorr("refmult6");
-  // fTotnMIPCorr = new StRefMultCorr("totnmip");
-  // fTofTrayMultCorr = new StRefMultCorr("toftray") ;
-  // fgRefMultCorr  = new StRefMultCorr("grefmult") ;
-  // fgRefMultCorr_Run14_AuAu200_VpdMB5_P16id = new StRefMultCorr("grefmult","Run14_AuAu200_VpdMB5","P16id") ;
-  // fgRefMultCorr_Run14_AuAu200_VpdMB30_P16id = new StRefMultCorr("grefmult","Run14_AuAu200_VpdMB30","P16id") ;
-  // fgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_LowMid_P16id = new StRefMultCorr("grefmult","Run14_AuAu200_VpdMBnoVtx_LowMid","P16id") ;
-  // fgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_High_P15ic = new StRefMultCorr("grefmult","Run14_AuAu200_VpdMBnoVtx_High","P15ic") ;
-  // fgRefMultCorr_Run16_AuAu200_VpdMB5_P16ij = new StRefMultCorr("grefmult","Run16_AuAu200_VpdMB5","P16ij") ;
-  // fgRefMultCorr_Run16_AuAu200_VpdMBnoVtx_P16ij = new StRefMultCorr("grefmult","Run16_AuAu200_VpdMBnoVtx","P16ij") ;
+   fRefMultCorr  = new StRefMultCorr("refmult") ;
+   fRefMult2Corr = new StRefMultCorr("refmult2") ;
+   fRefMult3Corr = new StRefMultCorr("refmult3") ;
+   fRefMultCorr_Isobar  = new StRefMultCorr("refmult","Isobar") ;
+   fRefMultCorrFxt = new StRefMultCorr("fxtmult");
+   fRefMult6Corr = new StRefMultCorr("refmult6");
+   fTotnMIPCorr = new StRefMultCorr("totnmip");
+   fTofTrayMultCorr = new StRefMultCorr("toftray") ;
+   fgRefMultCorr  = new StRefMultCorr("grefmult") ;
+   fgRefMultCorr_Run14_AuAu200_VpdMB5_P16id = new StRefMultCorr("grefmult","Run14_AuAu200_VpdMB5","P16id") ;
+   fgRefMultCorr_Run14_AuAu200_VpdMB30_P16id = new StRefMultCorr("grefmult","Run14_AuAu200_VpdMB30","P16id") ;
+   fgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_LowMid_P16id = new StRefMultCorr("grefmult","Run14_AuAu200_VpdMBnoVtx_LowMid","P16id") ;
+   fgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_High_P15ic = new StRefMultCorr("grefmult","Run14_AuAu200_VpdMBnoVtx_High","P15ic") ;
+   fgRefMultCorr_Run16_AuAu200_VpdMB5_P16ij = new StRefMultCorr("grefmult","Run16_AuAu200_VpdMB5","P16ij") ;
+   fgRefMultCorr_Run16_AuAu200_VpdMBnoVtx_P16ij = new StRefMultCorr("grefmult","Run16_AuAu200_VpdMBnoVtx","P16ij") ;
 }
 
 //_________________
@@ -79,77 +79,77 @@ CentralityMaker* CentralityMaker::instance() {
    return fRefMultCorr ;
  }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getRefMult2Corr() {
-//   return fRefMult2Corr ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getRefMult2Corr() {
+   return fRefMult2Corr ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getRefMult3Corr() {
-//   return fRefMult3Corr ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getRefMult3Corr() {
+   return fRefMult3Corr ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getRefMultCorr_Isobar() {
-//   return fRefMultCorr_Isobar ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getRefMultCorr_Isobar() {
+   return fRefMultCorr_Isobar ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getRefMultCorrFxt() {
-//   return fRefMultCorrFxt;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getRefMultCorrFxt() {
+   return fRefMultCorrFxt;
+ }
+
+_________________
+StRefMultCorr* CentralityMaker::getRefMult6Corr() {
+  return fRefMult6Corr;
+}
 
 //_________________
-//StRefMultCorr* CentralityMaker::getRefMult6Corr() {
-//  return fRefMult6Corr;
-//}
-//
-////_________________
-//StRefMultCorr* CentralityMaker::getTotnMIPCorr() {
-//  return fTotnMIPCorr;
-//}
+StRefMultCorr* CentralityMaker::getTotnMIPCorr() {
+  return fTotnMIPCorr;
+}
 
 /*
-//_________________
+_________________
 StRefMultCorr* CentralityMaker::getTofTrayMultCorr() {
   return fTofTrayMultCorr ;
 }
 */
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getgRefMultCorr() {
-//   return fgRefMultCorr ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getgRefMultCorr() {
+   return fgRefMultCorr ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getgRefMultCorr_Run14_AuAu200_VpdMB5_P16id() {
-//   return fgRefMultCorr_Run14_AuAu200_VpdMB5_P16id ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getgRefMultCorr_Run14_AuAu200_VpdMB5_P16id() {
+   return fgRefMultCorr_Run14_AuAu200_VpdMB5_P16id ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getgRefMultCorr_Run14_AuAu200_VpdMB30_P16id() {
-//   return fgRefMultCorr_Run14_AuAu200_VpdMB30_P16id ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getgRefMultCorr_Run14_AuAu200_VpdMB30_P16id() {
+   return fgRefMultCorr_Run14_AuAu200_VpdMB30_P16id ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_LowMid_P16id() {
-//   return fgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_LowMid_P16id ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_LowMid_P16id() {
+   return fgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_LowMid_P16id ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_High_P15ic() {
-//   return fgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_High_P15ic ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_High_P15ic() {
+   return fgRefMultCorr_Run14_AuAu200_VpdMBnoVtx_High_P15ic ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getgRefMultCorr_Run16_AuAu200_VpdMB5_P16ij() {
-//   return fgRefMultCorr_Run16_AuAu200_VpdMB5_P16ij ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getgRefMultCorr_Run16_AuAu200_VpdMB5_P16ij() {
+   return fgRefMultCorr_Run16_AuAu200_VpdMB5_P16ij ;
+ }
 
-// //_________________
-// StRefMultCorr* CentralityMaker::getgRefMultCorr_Run16_AuAu200_VpdMBnoVtx_P16ij() {
-//   return fgRefMultCorr_Run16_AuAu200_VpdMBnoVtx_P16ij ;
-// }
+ //_________________
+ StRefMultCorr* CentralityMaker::getgRefMultCorr_Run16_AuAu200_VpdMBnoVtx_P16ij() {
+   return fgRefMultCorr_Run16_AuAu200_VpdMBnoVtx_P16ij ;
+ }
 
 //_________________
 void CentralityMaker::help() const {
