@@ -1,6 +1,6 @@
 //---------------------从OO.root中提取直方图，并进行设置更改和元素添加----------------------
 #include "someFunction.h"
-void DrawNSigmaEPiKP(TString inFilename = "roots/20260325_Au200_3groups_MoreVzBinInMix_P23ie.root", Int_t number = 3) //
+void DrawNSigmaEPiKP(TString inFilename = "roots/6_20260330_Au200_3groups_MoreMaxProFile_P23ie.root", Int_t number = 6) //
 {
 	// 从root文件中导入待拟合的直方图
 	TFile *inFile = new TFile(inFilename);
@@ -499,8 +499,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/20260325_Au200_3groups_MoreVzBi
 		c_eTrack->SaveAs(Form("roots/%d_ep_TrackQA.png", number));
 		// delete c_eTrack;
 	}
-
-	if (1) // EID in group1(pT>0.2, |eta|<1)
+	if (0) // EID in group1(pT>0.2, |eta|<1)
 	{
 		// 设置直方图格式
 		// 去除误差条，设置Marker形状颜色，设置线条颜色，设置图例，设置坐标轴标题，设置对数Y坐标）
@@ -555,7 +554,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/20260325_Au200_3groups_MoreVzBi
 
 		c4->SaveAs(Form("roots/%d_group1.png", number));
 	}
-	if (1) // EID in group2(pT>0.2, 1.0<|eta|<1.8)
+	if (0) // EID in group2(pT>0.2, 1.0<|eta|<1.8)
 	{
 		// 设置直方图格式
 		//h_nSigmaElectron_P__2->SetTitle("n#sigma_{e} in p_{T}>0.2&0.9<|#eta|<1.8;p (GeV/c);n#sigma_{e}");
@@ -646,7 +645,7 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/20260325_Au200_3groups_MoreVzBi
 
 		c5->SaveAs(Form("roots/%d_group2.png", number));
 	}
-	if (1) // EID in group3(pT>0.2, 1.0<|eta|<1.8)
+	if (0) // EID in group3(pT>0.2, 1.0<|eta|<1.8)
 	{
 		// 设置直方图格式
 
@@ -731,7 +730,6 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/20260325_Au200_3groups_MoreVzBi
 
 		c6->SaveAs(Form("roots/%d_group3.png", number));
 	}
-
 	if (1)//check PhiV cut
 	{
 		h_Mee__ranComb->SetLineColor(kBlack);
@@ -751,6 +749,14 @@ void DrawNSigmaEPiKP(TString inFilename = "roots/20260325_Au200_3groups_MoreVzBi
 		fphiVcut->GetXaxis()->SetRangeUser(0, 0.2);
 		h_Mee_PhiV__ranComb->DrawClone("col z");
 		fphiVcut->DrawClone("same");
+		TPaveText *pt2 = new TPaveText(0.15, 0.79, 0.85, 0.86, "NDC NB");
+		pt2->SetFillColorAlpha(0, 0);   // 透明底
+		pt2->SetBorderSize(0);
+		pt2->SetTextFont(42);
+		pt2->SetTextSize(0.032);
+		pt2->SetTextAlign(12);
+		pt2->AddText("#phi_{V}(M_{ee})=0.8433*Exp(-49.4819*M)-0.9966*M+0.1980");
+		pt2->DrawClone("same");
 
 		c_temp->cd(2);
 		gPad->SetLogz(1);
