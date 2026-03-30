@@ -564,8 +564,8 @@ Int_t StPicoDstarMixedMaker::Make()
 			  }
 		  }
 
-		  if (isElectronRegion1)//
-		  //if (isElectronRegion1 || isElectronRegion2 || (isElectronRegion3 && !isLowEtaElectron__3))// && !isLowPElectron__3;isLowEtaElectron__3
+		  //if (isElectronRegion1)//
+		  if (isElectronRegion1 || isElectronRegion2 || (isElectronRegion3 && !isLowEtaElectron__3))// && !isLowPElectron__3;isLowEtaElectron__3
 		  {
 			h_Pt_Cen_nSigmaE->Fill(mom.Perp(), mCen16, nSigmaE, reWeight);
 			h_Eta_Cen_nSigmaE->Fill(mom.Eta(), mCen16, nSigmaE, reWeight);
